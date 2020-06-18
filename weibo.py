@@ -87,7 +87,7 @@ class weibo():
     def _inputBut(self):
         try:
             inputBut = self._getInputBut()
-            input.click()
+            inputBut.click()
             config.msleep(5, "inputBut")
         except:
             mlog.Logw("没找到输入按钮")
@@ -109,10 +109,12 @@ class weibo():
             self.browser.save_screenshot("errorscreenshot/inputconterror.png")
 
         try:
-            a = 1
+            sendPictureBut = self._getSendPictureBut()
+            for picPath in contPic:
+                sendPictureBut.send_keys(picPath)
         except:
             b = 1
-
+            print(1)
         try:
             publishBut = self._getPublishBut()
             publishBut.click()
@@ -125,37 +127,51 @@ class weibo():
     #右上角那个发微博的按钮
     def _getInputBut(self):
         return self.browser.find_element_by_xpath('//div[@class="lite-iconf lite-iconf-releas"]')
+    def _isExistInputBut(self):
+        return len(self.browser.find_elements_by_xpath('//div[@class="lite-iconf lite-iconf-releas"]')) > 0
 
     #输入框
     def _getInputContext(self):
         return self.browser.find_element_by_xpath('//span[@class="m-wz-def"]/textarea[@placeholder="分享新鲜事…"]')
+    def _isExistInputContext(self):
+        return len(self.browser.find_elements_by_xpath('//span[@class="m-wz-def"]/textarea[@placeholder="分享新鲜事…"]')) > 0
 
     #写好了之后的那个发微博的按钮
     def _getPublishBut(self):
         return self.browser.find_element_by_xpath('//a[@class="m-send-btn disabled"]')
+    def _isExistPublishBut(self):
+        return len(self.browser.find_elements_by_xpath('//a[@class="m-send-btn disabled"]')) > 0
 
     def _getLoginNameContext(self):
         return self.browser.find_element_by_id("loginName")
+    def _isExistLoginNameContext(self):
+        return len(self.browser.find_elements_by_id("loginName")) > 0
+
+    def _getSendPictureBut(self):
+        return self.browser.find_element_by_xpath('//h4[@class="lite-iconf lite-iconf-pic"]')
+    def _isExistSendPictureBut(self):
+        return len(self.browser.find_elements_by_xpath('//h4[@class="lite-iconf lite-iconf-pic"]')) > 0
 
     def _getLoginPassContext(self):
         return self.browser.find_element_by_id("loginPassword")
+    def _isExistLoginPassContext(self):
+        return len(self.browser.find_elements_by_id("loginPassword")) > 0
 
     def _getLoginBut(self):
-        return self.self.browser.find_element_by_id('loginAction')
+        return self.browser.find_element_by_id('loginAction')
+    def _isExistLoginBut(self):
+        return len(self.browser.find_elements_by_id('loginAction')) > 0
     #-------------------------------------------------------------------------------------
     def _getState(self):
-        element = self._getLoginBut()
-        if len(element) != 0:
+        if self._isExistLoginBut():
             self.state =  state.LOGIN
             return
 
-        element = self._getPublishBut()
-        if len(element) != 0:
+        if self._isExistPublishBut():
             self.state = state.PUBLISH
             return 
 
-        element = self._getInputBut()
-        if len(element) != 0:
+        if self._isExistInputBut():
             self.state = state.MAIN
             return
         
@@ -163,22 +179,22 @@ class weibo():
         return
     #----------------------------------------API-------------------------------------------
     def update(self):
-        if len(self.publishCont) == 0:
+        if len(self.publishList) == 0:
             return
 
         self._getState()
         self.updataFuncDic[self.state]()
 
-    def publish(self, str, pic):
-        if not isinstance(str, str):
+    def publish(self, mstr, pic):
+        if not isinstance(mstr, str):
             return
 
         if not isinstance(pic, tuple):
             return
 
         cont = {
-            "str" : str,
+            "str" : mstr,
             "pic" : pic,
         }
 
-        self.publishList.insert(cont)
+        self.publishList.append(cont)
