@@ -1,0 +1,23 @@
+{
+    "weibo":{
+        "username":"username",
+        "password":"password",
+        "loginurl":"https://passport.weibo.cn/signin/login",
+        "headless":true,
+        "pictureless":true
+    },
+    "twitter":{
+        "url":"https://mobile.twitter.com/realDonaldTrump"
+    },
+    "other":{
+        "timegap":600,
+        "dbfile":"db.txt",
+        "driverpath":"/Users/zhongshoulei/Downloads/chromedriver"
+    },
+    "html":{
+        "divh":"<div class=\"dir-ltr\" dir=\"ltr\">",
+        "divt":"</div>",
+        "ah":"<a href",
+        "at":"</a>"
+    }
+}
