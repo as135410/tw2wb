@@ -58,6 +58,7 @@ class weibo():
             usernameText = self._getLoginNameContext()
             usernameText.clear()
             usernameText.send_keys(self.username)
+            mlog.Logi("登入账号"+self.username)
         except:
             mlog.Logw("输入账号出错")
             self.browser.save_screenshot("errorscreenshot/loginerror.png")
@@ -108,13 +109,12 @@ class weibo():
             mlog.Logw("没找到输入框")
             self.browser.save_screenshot("errorscreenshot/inputconterror.png")
 
-        try:
-            sendPictureBut = self._getSendPictureBut()
-            for picPath in contPic:
-                sendPictureBut.send_keys(picPath)
-        except:
-            b = 1
-            print(1)
+        
+        '''sendPictureBut = self._getSendPictureBut()
+        sendPictureBut.click()
+        for picPath in contPic:
+            sendPictureBut.send_keys(picPath)'''
+
         try:
             publishBut = self._getPublishBut()
             publishBut.click()
@@ -138,9 +138,9 @@ class weibo():
 
     #写好了之后的那个发微博的按钮
     def _getPublishBut(self):
-        return self.browser.find_element_by_xpath('//a[@class="m-send-btn disabled"]')
+        return self.browser.find_element_by_xpath('//a[@class="m-send-btn"]')
     def _isExistPublishBut(self):
-        return len(self.browser.find_elements_by_xpath('//a[@class="m-send-btn disabled"]')) > 0
+        return len(self.browser.find_elements_by_xpath('//a[@class="m-send-btn disabled"]')) > 0 or len(self.browser.find_elements_by_xpath('//a[@class="m-send-btn"]')) > 0
 
     def _getLoginNameContext(self):
         return self.browser.find_element_by_id("loginName")
